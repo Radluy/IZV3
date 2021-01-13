@@ -24,14 +24,17 @@ def make_geo(df: pd.DataFrame) -> geopandas.GeoDataFrame:
 def plot_geo(gdf: geopandas.GeoDataFrame, fig_location: str = None,
              show_figure: bool = False):
     """ Vykresleni grafu s dvemi podgrafy podle lokality nehody """
-    fig,ax=plt.subplots(1,2,figsize=(10,8))
-    gdf[gdf["p5a"]==1].plot(ax=ax[0], markersize=2, label="V obci")
+    fig,ax=plt.subplots(1,2,figsize=(12,11))
+    gdf[gdf["p5a"]==1].plot(ax=ax[0], markersize=1).set_title("Nehody v JHM kraji: V obci")
     ctx.add_basemap(ax[0],crs=gdf.crs.to_string(),
-                    source=ctx.providers.Stamen.TonerLite,alpha=0.9)
-    
-    gdf[gdf["p5a"]==2].plot(ax=ax[1], markersize=2, color="r")
+                    source=ctx.providers.Stamen.TonerLite,zoom=10, alpha=0.9)
+
+    gdf[gdf["p5a"]==2].plot(ax=ax[1], markersize=1, color="r").set_title("Nehody v JHM kraji: Mimo obce")
     ctx.add_basemap(ax[1],crs=gdf.crs.to_string(),
-                    source=ctx.providers.Stamen.TonerLite,alpha=0.9)
+                    source=ctx.providers.Stamen.TonerLite,alpha=0.9, zoom=10)
+
+    ax[0].axis("off")
+    ax[1].axis("off")
 
     if (fig_location):
         plt.savefig(fig_location)
