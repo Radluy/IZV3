@@ -96,6 +96,7 @@ def plot_cluster(gdf: geopandas.GeoDataFrame, fig_location: str = None,
 
     plt.figure(figsize=(20, 20))
     ax = plt.gca()
+    gdf.plot(ax=ax, markersize=0.1, color="grey")
     gdf3.plot(ax=ax, markersize=gdf3["cnt"] / 10, column="cnt",
               legend=True, alpha=0.5)
     ctx.add_basemap(ax, crs="epsg:3857",
@@ -111,5 +112,5 @@ def plot_cluster(gdf: geopandas.GeoDataFrame, fig_location: str = None,
 
 if __name__ == "__main__":
     gdf = make_geo(pd.read_pickle("accidents.pkl.gz"))
-    plot_geo(gdf, "geo1.png", True)
+    #plot_geo(gdf, "geo1.png", True)
     plot_cluster(gdf, "geo2.png", True)
