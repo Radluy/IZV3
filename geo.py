@@ -7,11 +7,16 @@ import contextily as ctx
 import sklearn.cluster
 import numpy as np
 
-
-
-
 def make_geo(df: pd.DataFrame) -> geopandas.GeoDataFrame:
+    '''
+    Plots the types of surfaces when car crashes happened.
 
+            Parameters:
+                    df (pd.DataFrame): DataFrame with data to plot
+                    fig_location (str): File name to save figure
+                    show_figure (bool): Whether to show figure
+
+    '''
     df = df.loc[df['region'] == 'JHM']
     df.dropna(axis='rows', inplace=True)
     gdf = geopandas.GeoDataFrame(
@@ -23,7 +28,16 @@ def make_geo(df: pd.DataFrame) -> geopandas.GeoDataFrame:
 
 def plot_geo(gdf: geopandas.GeoDataFrame, fig_location: str = None,
              show_figure: bool = False):
+    '''
+    Plots the accidents to map, split by whether they
+    happened in a village or not.
 
+            Parameters:
+                    gdf (geopandas.GeoDataFrame): GeoDataFrame with data to plot
+                    fig_location (str): File name to save figure
+                    show_figure (bool): Whether to show figure
+
+    '''
     fig,ax=plt.subplots(1,2,figsize=(20,18))
     gdf[gdf["p5a"]==1].plot(ax=ax[0], markersize=1).set_title("Nehody v JHM kraji: V obci")
     ctx.add_basemap(ax[0],crs=gdf.crs.to_string(),
@@ -45,7 +59,15 @@ def plot_geo(gdf: geopandas.GeoDataFrame, fig_location: str = None,
 
 def plot_cluster(gdf: geopandas.GeoDataFrame, fig_location: str = None,
                  show_figure: bool = False):
+    '''
+    Plots the accidents aggregated into 12 clusters onto a map.
 
+            Parameters:
+                    gdf (geopandas.GeoDataFrame): GeoDataFrame with data to plot
+                    fig_location (str): File name to save figure
+                    show_figure (bool): Whether to show figure
+
+    '''
     coords = np.dstack([gdf.geometry.x, gdf.geometry.y]).reshape(-1, 2)
     db = sklearn.cluster.MiniBatchKMeans(n_clusters=12).fit(coords)
 
@@ -71,7 +93,6 @@ def plot_cluster(gdf: geopandas.GeoDataFrame, fig_location: str = None,
         plt.show()
 
 if __name__ == "__main__":
-    # zde muzete delat libovolne modifikace
     gdf = make_geo(pd.read_pickle("accidents.pkl.gz"))
     plot_geo(gdf, "geo1.png", True)
     plot_cluster(gdf, "geo2.png", True)
