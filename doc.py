@@ -27,3 +27,16 @@ plt.ylabel("Počet")
 
 plt.savefig("fig.png")
 
+cycle = df_s[df_s['vehicle_type'] == 13]
+cycle_vil = cycle[cycle['village'] == 1].count()
+cycle_rur = cycle[cycle['village'] == 2].count()
+
+moto = df_s[df_s['vehicle_type'] == 1]
+moto_vil = moto[moto['village'] == 1].count()
+moto_rur = moto[moto['village'] == 2].count()
+
+print("počet cyklo nehôd v obci: {}".format(cycle_vil['village']))
+print("počet cyklo nehôd mimo obce: {}".format(cycle_rur['village']))
+
+print("počet motocyklo nehôd v obci: {}".format(moto_vil['village']))
+print("počet motocyklo nehôd mimo obce: {}".format(moto_rur['village']))
