@@ -22,8 +22,7 @@ def make_geo(df: pd.DataFrame) -> geopandas.GeoDataFrame:
     df.dropna(axis='rows', inplace=True)
     gdf = geopandas.GeoDataFrame(
         df, geometry=geopandas.points_from_xy(df["d"], df["e"]),
-        crs="EPSG:5514"
-    )
+        crs="EPSG:5514")
     gdf = gdf.to_crs("EPSG:3857")
     return gdf
 
